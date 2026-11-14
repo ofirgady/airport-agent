@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "airport-investment-agent"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "requests~=2.34",
+    "openai-agents[voice]~=0.17.7",
+    "fastapi~=0.139.0",
+    "pydantic~=2.13",
+    "httpx~=0.28.1",
+    "python-dotenv~=1.2",
+    "uvicorn~=0.50.0",
+    "numpy~=2.5",
+    "streamlit~=1.59",
+    "jupyter~=1.1",
+    "ipykernel~=7.3",
+    "python-multipart~=0.0.32",
+    "tenacity~=9.1",
+]
+
+[project.optional-dependencies]
+dev = ["black~=26.5", "ruff~=0.15.20", "pytest~=9.1", "pyright~=1.1"]
+
+[tool.setuptools.packages.find]
+include = ["airport_investment_agent*"]

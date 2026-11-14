@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Local secrets
+.env
+
+# Runtime state (SQLite sessions + JSONL run log)
+airport_investment_agent/data/sessions.db*
+airport_investment_agent/data/runs.jsonl
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
