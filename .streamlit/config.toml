@@ -1,0 +1,47 @@
+[client]
+toolbarMode = "minimal"
+
+[theme]
+base = "dark"
+primaryColor = "#52525B"
+backgroundColor = "#09090B"
+secondaryBackgroundColor = "#18181B"
+codeBackgroundColor = "#27272A"
+textColor = "#FAFAFA"
+linkColor = "#FAFAFA"
+borderColor = "#27272A"
+showWidgetBorder = true
+showSidebarBorder = true
+baseRadius = "6px"
+buttonRadius = "6px"
+font = "'Inter':https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+codeFont = "'JetBrains Mono':https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+codeFontSize = "0.875rem"
+codeTextColor = "#FAFAFA"
+baseFontSize = 14
+baseFontWeight = 400
+headingFontSizes = ["36px", "30px", "24px", "20px", "16px", "14px"]
+headingFontWeights = [600, 600, 600, 600, 600, 600]
+linkUnderline = true
+chartCategoricalColors = ["#FAFAFA", "#A1A1AA", "#71717A", "#52525B", "#3B82F6", "#EF4444", "#22C55E"]
+
+grayColor = "#A1A1AA"
+blueColor = "#3B82F6"
+greenColor = "#22C55E"
+redColor = "#EF4444"
+yellowColor = "#EAB308"
+orangeColor = "#F97316"
+violetColor = "#8B5CF6"
+
+dataframeBorderColor = "#27272A"
+dataframeHeaderBackgroundColor = "#18181B"
+
+[theme.sidebar]
+backgroundColor = "#18181B"
+secondaryBackgroundColor = "#27272A"
+codeBackgroundColor = "#3F3F46"
+textColor = "#FAFAFA"
+borderColor = "#3F3F46"
+primaryColor = "#52525B"
+dataframeHeaderBackgroundColor = "#27272A"
+dataframeBorderColor = "#3F3F46"
