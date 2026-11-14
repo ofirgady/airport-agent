@@ -1,0 +1,15 @@
+.git/
+.github/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.env
+.vscode/
+.DS_Store
+notebooks/
+tests/
+airport_investment_agent/data/sessions.db*
+airport_investment_agent/data/runs.jsonl

@@ -1,0 +1,30 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./airport_investment_agent/data:/app/airport_investment_agent/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    mem_limit: 768m
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://app:8000
+    depends_on:
+      app:
+        condition: service_healthy
+    mem_limit: 512m
