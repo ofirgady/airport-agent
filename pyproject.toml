@@ -9,6 +9,9 @@ requires-python = ">=3.13"
 dependencies = [
     "requests~=2.34",
     "openai-agents[voice]~=0.17.7",
+    # openai-agents 0.17.x builds Usage() with only cached_tokens; newer openai
+    # releases made cache_write_tokens required, so pin to the locked line.
+    "openai~=2.44.0",
     "fastapi~=0.139.0",
     "pydantic~=2.13",
     "httpx~=0.28.1",
