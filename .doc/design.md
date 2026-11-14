@@ -6,18 +6,18 @@ Part of this project's design documentation (see [README](../README.md#documenta
 
 | Source | Provides | Why this shape |
 |---|---|---|
-| **BTS T-100** (`data.bts.gov/resource/r495-tyji.json`, Socrata JSON API, free, no key) | Passengers, departures, seats, per calendar year - plus BTS's own precomputed `total_load_factor` and `total_passengers_flight` fields, used directly (see KPI table) | No month-level field exists at all (verified live) - the current year is one collapsed year-to-date row, not 12 monthly rows. Calendar-year-over-calendar-year is the honest ceiling of what this data supports |
+| **BTS T-100** (`data.bts.gov/resource/r495-tyji.json`, Socrata JSON API, free, no key) | Passengers, departures, seats and BTS's own `total_load_factor`, per airport per month (`reporting_month`) - aggregated server-side (SoQL `$group`) into calendar-year rows | BTS publishes T-100 monthly, so one grouped query returns a whole year per row instead of 12 rows to sum client-side. The in-progress year is labelled year-to-date and never compared against a complete year, so growth is calendar-year-over-calendar-year |
 | **BTS On-Time Performance** (`transtats.bts.gov/PREZIP/...zip`, free, no key, large throttled flat file) | Flight-level records for one month - powers completion rate, congestion, taxi-out, and long-haul share | One shared download/parse pass, since fetching this file four times per query would be needlessly slow. Delayed-departure classification uses BTS's own `DepDel15` field rather than re-deriving the threshold |
 | **Region membership** | A small hardcoded dict of five curated U.S. regions | No free dataset encodes informal regions like "New England" - verified live against OurAirports and FAA data, both of which resolve only to state/administrative codes. The nationwide ranking reuses this same dict's union (~46 airports) as its peer set |
 
-Every KPI below was checked against BTS's own live field list before deciding whether to compute it ourselves or use a published field directly - `total_load_factor`, `total_passengers_flight`, and `DepDel15` were all found and adopted this way.
+Every KPI below was checked against BTS's own live field list before deciding whether to compute it ourselves or use a published field directly - `total_load_factor` and `DepDel15` were both found and adopted this way.
 
 ## KPI Definitions
 
 | KPI | Formula | Source |
 |---|---|---|
-| Load factor | BTS's own `total_load_factor` field¹ | T-100 |
-| Passengers per departure | BTS's own `total_passengers_flight` field | T-100 |
+| Load factor | BTS's own monthly `total_load_factor`, seat-mile weighted across the year¹ | T-100 |
+| Passengers per departure | Annual passengers ÷ annual departures | T-100 |
 | Growth rate | (current year - prior year) / prior year | T-100, 2 most recent complete years |
 | Completion rate | 1 - cancelled / scheduled (the industry-standard "completion factor") | On-Time Performance, latest month |
 | Delayed-departure rate | % of non-cancelled departures BTS's own `DepDel15` field flags ≥15min late² | On-Time Performance, latest month |
@@ -27,7 +27,7 @@ Every KPI below was checked against BTS's own live field list before deciding wh
 | Long-haul share | % of flights with Distance ≥2300mi⁴ | On-Time Performance, latest month |
 | Unmet-demand score (0-1) | Equal-weighted (25/25/25/25) blend of volume, load pressure, growth, congestion | Derived |
 
-¹ Not a flat `passengers/seats` ratio - official load factor is RPM/ASM (revenue passenger-miles ÷ available seat-miles), which only equals a flat ratio for a single nonstop segment. Aggregated across a whole airport-year of mixed-distance routes, the two can genuinely diverge, so BTS's own distance-weighted figure is used instead of approximating it.
+¹ Not a flat `passengers/seats` ratio - official load factor is RPM/ASM (revenue passenger-miles ÷ available seat-miles), which only equals a flat ratio for a single nonstop segment. Aggregated across a whole airport-year of mixed-distance routes, the two can genuinely diverge, so BTS's own distance-weighted monthly figure is used, and the months are combined as `Σ(lf × seats × avg stage length) / Σ(seats × avg stage length)` - i.e. weighted by available seat-miles - rather than averaged flat (which would over-weight quiet months).
 ² DOT's own on-time standard (14 CFR Part 234) - exposed as its own field so DDI can be cross-checked against the official definition.
 ³ `delay_rate_pct` is the delayed-departure rate above; `severity_pct` is the average delay among those, capped at 60min, as a %. This composite (the weights and the cap) is this project's own proxy, not an industry-standard metric - no FAA/DOT/BTS metric by this name exists; only the ≥15min rate ingredient is DOT's official definition.
 ⁴ A disclosed, round-number judgment call, not a BTS-defined category. Published airline thresholds for where "long-haul" starts range from ~700mi to 3,000mi depending on carrier; the EU's own short/medium/long-haul boundary sits at roughly 1,180-2,175mi.

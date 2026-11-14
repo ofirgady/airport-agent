@@ -33,19 +33,19 @@ def test_bts_traffic_parses_a_real_looking_response(
         [
             {
                 "year": "2025",
-                "total_passengers": "1000",
-                "total_departures": "10",
-                "total_seats": "1200",
-                "total_load_factor": "83.3",
-                "total_passengers_flight": "105.5",
+                "last_month": "2025-12-01T00:00:00.000",
+                "passengers": "1000",
+                "departures": "10",
+                "seats": "1200",
+                "load_factor_pct": "83.3",
             },
             {
                 "year": "2024",
-                "total_passengers": "900",
-                "total_departures": "9",
-                "total_seats": "1100",
-                "total_load_factor": "81.8",
-                "total_passengers_flight": "101.25",
+                "last_month": "2024-12-01T00:00:00.000",
+                "passengers": "900",
+                "departures": "9",
+                "seats": "1100",
+                "load_factor_pct": "81.8",
             },
         ]
     )
@@ -58,9 +58,9 @@ def test_bts_traffic_parses_a_real_looking_response(
     assert traffic.departures == 10
     assert traffic.seats == 1200
     assert traffic.load_factor == pytest.approx(0.833)
-    # Deliberately != passengers/departures (100.0) to prove this reads
-    # BTS's own total_passengers_flight field rather than re-deriving it.
-    assert traffic.passengers_per_departure == pytest.approx(105.5)
+    # BTS reports T-100 monthly; passengers/departure is derived from the
+    # year's summed passengers and departures.
+    assert traffic.passengers_per_departure == pytest.approx(100.0)
     assert traffic.growth_rate == pytest.approx((1000 - 900) / 900)
     assert traffic.completion_rate == 0.976
     assert "2026-03" in traffic.caveats[-1]
@@ -77,11 +77,11 @@ def test_bts_traffic_flags_stale_completion_data(
         [
             {
                 "year": "2025",
-                "total_passengers": "1000",
-                "total_departures": "10",
-                "total_seats": "1200",
-                "total_load_factor": "83.3",
-                "total_passengers_flight": "105.5",
+                "last_month": "2025-12-01T00:00:00.000",
+                "passengers": "1000",
+                "departures": "10",
+                "seats": "1200",
+                "load_factor_pct": "83.3",
             }
         ]
     )
@@ -105,11 +105,11 @@ def test_bts_traffic_does_not_flag_fresh_completion_data(
         [
             {
                 "year": "2025",
-                "total_passengers": "1000",
-                "total_departures": "10",
-                "total_seats": "1200",
-                "total_load_factor": "83.3",
-                "total_passengers_flight": "105.5",
+                "last_month": "2025-12-01T00:00:00.000",
+                "passengers": "1000",
+                "departures": "10",
+                "seats": "1200",
+                "load_factor_pct": "83.3",
             }
         ]
     )
@@ -131,11 +131,11 @@ def test_bts_traffic_degrades_gracefully_when_completion_data_unavailable(
         [
             {
                 "year": "2025",
-                "total_passengers": "1000",
-                "total_departures": "10",
-                "total_seats": "1200",
-                "total_load_factor": "83.3",
-                "total_passengers_flight": "105.5",
+                "last_month": "2025-12-01T00:00:00.000",
+                "passengers": "1000",
+                "departures": "10",
+                "seats": "1200",
+                "load_factor_pct": "83.3",
             }
         ]
     )

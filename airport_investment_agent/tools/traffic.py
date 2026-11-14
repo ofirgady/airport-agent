@@ -34,9 +34,9 @@ def get_airport_traffic(iata_code: str) -> AirportTraffic:
 
     caveats = [
         f"BTS T-100 data, year {current['year']}",
-        "load_factor and passengers_per_departure are BTS's own published "
-        "per-airport averages (total_load_factor, total_passengers_flight "
-        "fields), not independently re-derived from passengers/seats/departures.",
+        "load_factor is BTS's own published monthly load factor, seat-mile "
+        "weighted across the year; passengers_per_departure is the year's "
+        "passengers divided by its departures.",
     ]
 
     if len(complete_year_rows) >= 2:
