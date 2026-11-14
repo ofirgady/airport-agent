@@ -4,6 +4,7 @@
 ![Framework](https://img.shields.io/badge/framework-OpenAI%20Agents%20SDK-black?style=flat-square)
 ![Data](https://img.shields.io/badge/data-BTS%20(free%2C%20public)-2ea44f?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-pytest-0A9EDC?style=flat-square)
+[![CI](https://github.com/ofirgady/airport-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/ofirgady/airport-agent/actions/workflows/ci.yml)
 
 A lean MVP agent that tells you **which U.S. airports most warrant infrastructure investment** - combining free public flight-traffic data with a transparent, deterministic scoring model.
 
